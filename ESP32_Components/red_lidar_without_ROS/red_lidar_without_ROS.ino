@@ -21,6 +21,13 @@ Adafruit_NeoPixel strip(LED_COUNT, LED_PIN, LED_TYPE);
 #define LIDAR_TX_PIN 19
 #define BAUDRATE 115200
 
+// UART2 - передача данных в следующий микроконтроллер
+HardwareSerial UART2(2);
+// Инициализация UART
+#define UART_TX_PIN 16
+#define UART_RX_PIN 4  // Любой свободный, если Arduino не отправляет обратно данные обратно
+const unsigned long STATUS_PRINT_INTERVAL = 100; // 100 мс = 10 раз в секунду
+
 // Структура пакета лидара: 4 байта заголовка, затем 32 байта данных
 static const uint8_t LIDAR_HEADER[] = { 0x55, 0xAA, 0x03, 0x08 };
 static const uint8_t LIDAR_HEADER_LEN = 4;
@@ -29,7 +36,7 @@ static const uint8_t LIDAR_BODY_LEN = 32;
 // Пороговые расстояния (в миллиметрах) и время залипания аварии
 // ALARM_DIST  — красная зона, WARNING_DIST — жёлтая зона
 #define ALARM_DIST 400     // Менее 400 мм -> сектор в красном цвете
-#define WARNING_DIST 550   // Менее 550 мм (но >= 400 мм) -> жёлтый
+#define WARNING_DIST 650   // Менее 650 мм (но >= 400 мм) -> жёлтый
 #define ALARM_HOLD_MS 300  // Время (мс), которое сектор будет «залипать» в красном
 #define SECTOR_OFFSET 1    // Cдвиг секторов (0..11)
 
@@ -210,7 +217,7 @@ bool parseAndProcessPacket() {
     packetAngles[i] = angle;
   }
 
-  // 5) Создаём временный массив, где соберём минимальные расстояния по секторам
+  // 5) Создаём в ременный массив, где соберём минимальные расстояния по секторам
   //    (для 8 точек, что пришли в пакете).
   float tempSectorMin[NUM_SECTORS];
   for (int s = 0; s < NUM_SECTORS; s++) {
@@ -325,10 +332,13 @@ bool parseAndProcessPacket() {
 
 void setup() {
   // Инициализация Serial для вывода отладочных сообщений в консоль
-  Serial.begin(115200);
+  Serial.begin(BAUDRATE);
 
   // Инициализация Serial1 для чтения данных лидара (указать пины RX/TX)
   Serial1.begin(BAUDRATE, SERIAL_8N1, LIDAR_RX_PIN, LIDAR_TX_PIN);
+
+  // Инициализация Serial2 для передачи
+  UART2.begin(BAUDRATE, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
 
   // Инициализация адресной ленты светодиодов
   strip.begin();
@@ -341,4 +351,29 @@ void setup() {
 void loop() {
   // В основном цикле просто пытаемся считать и обработать пакет
   parseAndProcessPacket();
+
+  static unsigned long lastSendMillis = 0;
+  if (millis() - lastSendMillis >= STATUS_PRINT_INTERVAL) {
+    lastSendMillis = millis();
+
+    UART2.print("SECTORS: ");
+    for (int s = 0; s < NUM_SECTORS; s++) {
+      int sectorStatus;
+      float dist = sectorDistances[s];
+
+      if (dist == NO_VALUE) {
+        sectorStatus = 0;
+      } else if (millis() < sectorAlarmUntil[s]) {
+        sectorStatus = 2;
+      } else if (dist < WARNING_DIST) {
+        sectorStatus = 1;
+      } else {
+        sectorStatus = 0;
+      }
+
+      UART2.print(sectorStatus);
+      if (s < (NUM_SECTORS - 1)) UART2.print(",");
+    }
+    UART2.println();
+  }
 }
