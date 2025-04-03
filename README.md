@@ -15,14 +15,13 @@ https://github.com/stepanburmistrov/ROS2_robotV1/tree/main/3D
 https://stepik.org/lesson/1590256/step/1?unit=1611795
 
 ## LOW-LEVEL робота на основе микроконтроллера ESP32
-— Первые движения робота: https://stepik.org/lesson/1590257/step/1?unit=1611796
-— Кинематика и расчет местоположения: https://stepik.org/lesson/1590257/step/2?unit=1611796
-— Настройка PID-регуляторов: https://stepik.org/lesson/1590257/step/4?unit=1611796
-— Линейная и угловая скорость робота: https://stepik.org/lesson/1590257/step/7?unit=1611796
-— Световая индикация: https://stepik.org/lesson/1590257/step/10?unit=1611796
-— Подключение IMU: https://stepik.org/lesson/1590257/step/11?unit=1611796
-— Работа с сервоприводами манипулятора: https://stepik.org/lesson/1590257/step/13?unit=1611796
-— 
+- [**Первые движения робота**](https://stepik.org/lesson/1590257/step/1?unit=1611796)
+- [**Кинематика и расчет местоположения**](https://stepik.org/lesson/1590257/step/2?unit=1611796)
+- [**Настройка PID-регуляторов**](https://stepik.org/lesson/1590257/step/4?unit=1611796)
+- [**Линейная и угловая скорость робота**](https://stepik.org/lesson/1590257/step/7?unit=1611796)
+- [**Световая индикация**](https://stepik.org/lesson/1590257/step/10?unit=1611796)
+- [**Подключение IMU**](https://stepik.org/lesson/1590257/step/11?unit=1611796)
+- [**Работа с сервоприводами манипулятора**](https://stepik.org/lesson/1590257/step/13?unit=1611796)
 
 ## Курс по ROS2
 [**Бесплатный курс по ROS2**](https://stepik.org/course/221157):
