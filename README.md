@@ -26,7 +26,7 @@
 
 ## Курс по ROS2
 [**Бесплатный курс по ROS2**](https://stepik.org/course/221157):
-- [**Устанавка Linux**](https://stepik.org/lesson/1505338/step/1?unit=1525484)
+- [**Установка Linux**](https://stepik.org/lesson/1505338/step/1?unit=1525484)
 - [**Установка и запуск ROS2 Jazzy**](https://stepik.org/lesson/1505346/step/1?unit=1525492)
 - [**Топик, паблишер, подписчик и другие средства коммуникации**](https://stepik.org/lesson/1597035/step/1?unit=1618661)
 - [**Связь с LOW-LEVEL**](https://stepik.org/lesson/1590260/step/1?unit=1611799)
